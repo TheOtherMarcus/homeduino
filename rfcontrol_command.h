@@ -2,6 +2,7 @@
 
 
 int interrupt_pin = -1;
+int ledPin = 13;
 
 void rfcontrol_command_send();
 void rfcontrol_command_receive();
@@ -30,6 +31,7 @@ void rfcontrol_loop() {
       unsigned int buckets[8];
       unsigned int pulse_length_divider = RFControl::getPulseLengthDivider();
       RFControl::compressTimings(buckets, timings, timings_size);
+      digitalWrite(ledPin, 1);
       Serial.print("RF receive ");
       for(unsigned int i=0; i < 8; i++) {
         unsigned long bucket = buckets[i] * pulse_length_divider;
@@ -40,6 +42,7 @@ void rfcontrol_loop() {
         Serial.write('0' + timings[i]);
       }
       Serial.print("\r\n");
+      digitalWrite(ledPin, 0);
       RFControl::continueReceiving();
     }
   }
